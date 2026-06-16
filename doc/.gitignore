@@ -1,0 +1,17 @@
+# Build outputs
+_build/
+__pycache__/
+*.pyc
+
+# Editor files
+*~
+.*.swp
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated files
+*.mo
