@@ -34,10 +34,13 @@ jobs:
       - name: Build PDF
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra
+          sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra
           source .venv/bin/activate
-          sphinx-build -M latexpdf doc _build
+          # Generate LaTeX files
+          sphinx-build -b latex doc _build/latex
+          # Build PDF directly with pdflatex
           cd _build/latex
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
           pdflatex -interaction=nonstopmode rpa-spec.tex || true
           pdflatex -interaction=nonstopmode rpa-spec.tex || true
 
