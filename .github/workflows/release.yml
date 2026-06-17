@@ -1,0 +1,75 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Build HTML
+        run: |
+          source .venv/bin/activate
+          sphinx-build -M html doc _build
+
+      - name: Build PDF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra
+          source .venv/bin/activate
+          sphinx-build -b latex doc _build/latex
+          cd _build/latex
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            _build/latex/rpa-spec.pdf
+            _build/html/**/*
+          body: |
+            ## RPA Architecture Specification ${{ github.ref_name }}
+
+            ### Downloads
+            - `rpa-spec.pdf` - PDF version
+            - `html.zip` - HTML version (extract and open index.html)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload HTML artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd _build/html && zip -r ../../rpa-spec-html.zip . && cd ../..
+
+      - name: Create Release with HTML
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            _build/latex/rpa-spec.pdf
+            rpa-spec-html.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
