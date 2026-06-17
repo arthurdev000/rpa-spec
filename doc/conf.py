@@ -83,7 +83,7 @@ intersphinx_mapping = {
 # -- Custom substitutions ----------------------------------------------------
 
 rst_prolog = """
-.. |RPA| replace:: RPA Architecture
+.. |RPA| replace:: Recursive Privilege Architecture
 .. |DCB| replace:: Domain Control Block
 .. |IPA| replace:: Intermediate Physical Address
 """

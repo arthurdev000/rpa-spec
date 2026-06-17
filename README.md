@@ -1,6 +1,6 @@
 # RPA Specification
 
-This repository contains the RPA (RISC-V Processor Architecture) Specification.
+This repository contains the RPA (Recursive Privilege Architecture) Specification.
 
 ## Building the Documentation
 
