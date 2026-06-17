@@ -66,4 +66,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Copyright
 
-Copyright 2026 RPA Architecture Team
+Copyright 2026 Shanghai HappyFull Technologies

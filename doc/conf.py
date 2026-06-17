@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright 2026 RPA Architecture Team
+# SPDX-FileCopyrightText: Copyright 2026 Shanghai HappyFull Technologies
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
 # RPA Architecture Specification documentation build configuration file
@@ -6,8 +6,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'RPA Architecture Specification'
-author = 'RPA Architecture Team'
-copyright = '2026, RPA Architecture Team'
+author = 'Shanghai HappyFull Technologies'
+copyright = '2026, Shanghai HappyFull Technologies'
 
 # The short X.Y version
 version = '0.1'
@@ -71,7 +71,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files
 latex_documents = [
     ('index', 'rpa-spec.tex', 'RPA Architecture Specification',
-     'RPA Architecture Team', 'manual'),
+     'Shanghai HappyFull Technologies', 'manual'),
 ]
 
 # -- Intersphinx configuration -----------------------------------------------
