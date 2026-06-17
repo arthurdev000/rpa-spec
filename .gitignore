@@ -2,6 +2,7 @@
 _build/
 __pycache__/
 *.pyc
+.venv/
 
 # Editor files
 *~

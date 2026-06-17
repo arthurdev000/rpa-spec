@@ -1,0 +1,72 @@
+name: Build and Deploy to happyfulltech.github.io
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout rpa-spec
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Build HTML
+        run: |
+          source .venv/bin/activate
+          sphinx-build -M html doc _build
+
+      - name: Build PDF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra
+          source .venv/bin/activate
+          sphinx-build -M latexpdf doc _build
+          cd _build/latex
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
+          pdflatex -interaction=nonstopmode rpa-spec.tex || true
+
+      - name: Checkout happyfulltech.github.io
+        uses: actions/checkout@v4
+        with:
+          repository: happyfulltech/happyfulltech.github.io
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          path: gh-pages
+
+      - name: Deploy to subdirectory
+        run: |
+          # Remove old content
+          rm -rf gh-pages/rpa-spec
+          mkdir -p gh-pages/rpa-spec
+
+          # Copy new content
+          cp -r _build/html/* gh-pages/rpa-spec/
+          cp _build/latex/rpa-spec.pdf gh-pages/rpa-spec/
+
+          # Commit and push
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rpa-spec
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update RPA Spec from rpa-spec repo"
+          git push
+
+      - name: Summary
+        run: |
+          echo "Deployed to: https://happyfulltech.github.io/rpa-spec/"
+          echo "PDF: https://happyfulltech.github.io/rpa-spec/rpa-spec.pdf"

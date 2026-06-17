@@ -1,11 +1,11 @@
 # SPDX-FileCopyrightText: Copyright 2026 RPA Architecture Team
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
-# RPA Specification documentation build configuration file
+# RPA Architecture Specification documentation build configuration file
 
 # -- Project information -----------------------------------------------------
 
-project = 'RPA Specification'
+project = 'RPA Architecture Specification'
 author = 'RPA Architecture Team'
 copyright = '2026, RPA Architecture Team'
 
@@ -18,8 +18,6 @@ release = '0.1.0'
 
 extensions = [
     'sphinx.ext.intersphinx',      # Cross-referencing
-    'sphinx.ext.autodoc',          # Auto documentation from code
-    'sphinx.ext.viewcode',         # View source code links
     'sphinx.ext.graphviz',         # Graphviz diagrams
     'sphinxcontrib.plantuml',      # PlantUML diagrams
     'sphinx_rtd_theme',            # Read the Docs theme
@@ -55,6 +53,9 @@ html_theme_options = {
 
 html_static_path = ['_static']
 
+# Custom CSS
+html_css_files = ['custom.css']
+
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
@@ -64,32 +65,25 @@ latex_elements = {
     'preamble': r'''
 \usepackage{booktabs}
 \usepackage{longtable}
-\usepackage{bytefield}  % For bit-field diagrams like MMU page tables
 ''',
 }
 
 # Grouping the document tree into LaTeX files
 latex_documents = [
-    (master_doc, 'rpa-spec.tex', 'RPA Specification',
+    ('index', 'rpa-spec.tex', 'RPA Architecture Specification',
      'RPA Architecture Team', 'manual'),
-]
-
-# -- Options for PDF output (via LaTeX) --------------------------------------
-
-pdf_documents = [
-    ('index', 'rpa-spec', 'RPA Specification', 'RPA Architecture Team'),
 ]
 
 # -- Intersphinx configuration -----------------------------------------------
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
-    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
 }
 
 # -- Custom substitutions ----------------------------------------------------
 
 rst_prolog = """
-.. |RPA| replace:: RPA Specification
-.. |API| replace:: API
+.. |RPA| replace:: RPA Architecture
+.. |DCB| replace:: Domain Control Block
+.. |IPA| replace:: Intermediate Physical Address
 """
